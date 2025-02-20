@@ -1,34 +1,45 @@
 package org.example.filmtitlequiz.service;
 
+import org.example.filmtitlequiz.model.Movie;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class QuizService {
 	private final MovieService movieService;
+	private final BackdropsService backdropsService;
 
-	public QuizService(MovieService movieService) {
+	public QuizService(MovieService movieService, BackdropsService backdropsService) {
 		this.movieService = movieService;
+		this.backdropsService = backdropsService;
 	}
 
-	public String title() {
-		return Objects.requireNonNull(movieService
-						.getRandomMovieTitle()
-						.block());
+	public Map<String, Object> quizData() {
+
+		var movie = movieService.getRandomMovie().block();
+		if (movie == null) throw new NullPointerException("Movie is null in QuizService.quizData()");
+
+		return Map.of(
+				"title", movie.title(),
+				"backdropUrl", getBackdropUrl(movie),
+				"posterUrl", PosterService.buildImageUrl(movie.poster_path()),
+				"puzzleTitle", puzzleTitle(movie));
 	}
 
-	public List<String> puzzleTitle() {
-		return title()
+	private List<String> puzzleTitle(Movie movie) {
+		return movie.title()
 				.replaceAll("\\s{2,}", " ")
 				.chars()
 				.mapToObj(c -> format((char) c))
-				.collect(Collectors.toList());
+				.toList();
 	}
 
-	public String currentGenre() {
+	private String getBackdropUrl(Movie movie) {
+		return Objects.requireNonNull(backdropsService.randomBackdropUrl(movie)).block();
+	}
+
+	private String currentGenre() {
 		return movieService.currentGenre();
 	}
 

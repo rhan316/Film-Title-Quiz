@@ -25,18 +25,19 @@
 
     </style>
 </head>
-<body class="bg-dark text-white text-center">
+<body   th:style="${'background: url(' + backdropUrl + ') no-repeat center center fixed; background-size: cover;'}"
+        class="bg-dark text-white text-center">
     <div class="container mt-5">
         <h1 class="display-4">Movie</h1>
         <div>
-            <span th:each="charr : ${movieTitle}"
+            <span th:each="charr : ${puzzleTitle}"
                   th:utext="${charr == ' ' ? '&nbsp;' : charr}"
                   th:classappend="${charr == ' ' ? 'space-box' : 'chars-box'}"
             >
             </span>
         </div>
         <br>
-        <span th:text="${genre}"></span>
+        <span th:text="${title}"></span>
         <br>
         <br>
         <a href="/movie" class="btn btn-primary">Accept</a>

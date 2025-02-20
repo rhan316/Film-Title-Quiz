@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,7 +26,7 @@ public class MovieService {
 		this.tmdbConfig = tmdbConfig;
 	}
 
-	public Mono<String> getRandomMovieTitle() {
+	public Mono<Movie> getRandomMovie() {
 		currentGenre = getRandomMovieGenre();
 
 		return webClient
@@ -37,17 +38,16 @@ public class MovieService {
 
 					List<Movie> filteredMovies = getFilteredMovies(response);
 
-					if (!filteredMovies.isEmpty()) {
-						return Mono.just(filteredMovies
-										.get(getRandomNumber(filteredMovies.size() - 1))
-										.getTitle());
-					}
+					if (!filteredMovies.isEmpty())
+						return Mono.just(filteredMovies.get(getRandomNumber(filteredMovies.size() - 1)));
 
-					return getRandomMovieTitle();
+					return Mono.just(getDefaultMovie());
 				});
-
 	}
 
+	private Movie getDefaultMovie() {
+		return new Movie(0, "Default_Title", "Default_path");
+	}
 	public String currentGenre() {
 		return currentGenre.name().toUpperCase();
 	}
@@ -73,7 +73,7 @@ public class MovieService {
 		return response
 				.getResults()
 				.stream()
-				.filter(movie -> countWords(movie.getTitle()) <= 4)
+				.filter(movie -> countWords(movie.title()) <= 4)
 				.toList();
 	}
 

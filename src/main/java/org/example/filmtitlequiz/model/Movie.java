@@ -1,10 +1,8 @@
 package org.example.filmtitlequiz.model;
 
-public class Movie {
-	private String title;
-	private String poster_path;
+public record Movie(
 
-	public String getTitle() {
-		return title;
-	}
-}
+		long   id,
+		String title,
+		String poster_path
+) { }

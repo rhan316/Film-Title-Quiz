@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MovieController {
@@ -17,11 +18,8 @@ public class MovieController {
 
 	@GetMapping("/movie")
 	public String showRandomMovie(Model model) {
-		List<String> titleCharList = quizService.puzzleTitle();
-		String genre = quizService.currentGenre();
-
-		model.addAttribute("genre", genre);
-		model.addAttribute("movieTitle", titleCharList);
+		Map<String, Object> data = quizService.quizData();
+		model.addAllAttributes(data);
 
 		return "movie";
 	}
