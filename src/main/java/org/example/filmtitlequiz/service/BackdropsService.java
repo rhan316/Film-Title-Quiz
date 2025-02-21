@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 @Service
 public class BackdropsService {
@@ -22,20 +26,40 @@ public class BackdropsService {
 				.build();
 	}
 
-	public Mono<String> randomBackdropUrl(Movie movie) {
-		return getRandomMovieBackdrops(movie.id())
+	public List<String> backdropData(Movie movie) {
+		String placeholder = "https://via.placeholder.com/1280x720?text=No+backdrop";
+		List<String> backdropList = getRandomMovieBackdrops(movie).block();
+
+		return shuffle(backdropList, placeholder);
+	}
+
+	private List<String> shuffle(List<String> list, String placeholder) {
+		if (list == null || list.isEmpty()) return List.of(placeholder, placeholder, placeholder);
+
+		List<String> mutableBackdropList = new ArrayList<>(list);
+		Collections.shuffle(mutableBackdropList);
+
+		return IntStream.rangeClosed(0, 3)
+				.mapToObj(i -> Optional.ofNullable(i < mutableBackdropList.size()
+						? mutableBackdropList.get(i) : placeholder)
+						.orElseThrow())
+				.toList();
+	}
+
+	private Mono<String> randomBackdropUrl(Movie movie) {
+		return getRandomMovieBackdrops(movie)
 				.map(backdrops -> {
 					if (backdrops.isEmpty()) return "https://via.placeholder.com/800x450?text=No+backdrop";
-					int index = ThreadLocalRandom.current().nextInt(0, backdrops.size());
+					int index = ThreadLocalRandom.current().nextInt(0, backdrops.size() - 1);
 
 					return backdrops.get(index);
 				});
 	}
 
-	private Mono<List<String>> getRandomMovieBackdrops(long movieId) {
+	private Mono<List<String>> getRandomMovieBackdrops(Movie movie) {
 		return webClient
 				.get()
-				.uri("/movie/{movieId}/images?api_key={apiKey}", movieId, tmdbConfig.getApiKey())
+				.uri("/movie/{movieId}/images?api_key={apiKey}", movie.id(), tmdbConfig.getApiKey())
 				.retrieve()
 				.bodyToMono(BackdropResponse.class)
 				.map(response -> response.backdrops()

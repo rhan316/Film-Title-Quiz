@@ -20,9 +20,14 @@ public class QuizService {
 		var movie = movieService.getRandomMovie().block();
 		if (movie == null) throw new NullPointerException("Movie is null in QuizService.quizData()");
 
+		List<String> backdrops = backdropsService.backdropData(movie);
+
 		return Map.of(
 				"title", movie.title(),
-				"backdropUrl", getBackdropUrl(movie),
+				"genre", movieService.currentGenre(),
+				"backdrop1", backdrops.get(0),
+				"backdrop2", backdrops.get(1),
+				"backdrop3", backdrops.get(2),
 				"posterUrl", PosterService.buildImageUrl(movie.poster_path()),
 				"puzzleTitle", puzzleTitle(movie));
 	}
@@ -33,10 +38,6 @@ public class QuizService {
 				.chars()
 				.mapToObj(c -> format((char) c))
 				.toList();
-	}
-
-	private String getBackdropUrl(Movie movie) {
-		return Objects.requireNonNull(backdropsService.randomBackdropUrl(movie)).block();
 	}
 
 	private String currentGenre() {

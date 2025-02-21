@@ -25,6 +25,8 @@ dependencies {
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.5.16'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.4.2'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.4.2'
+    implementation group: 'org.webjars', name: 'bootstrap', version: '5.3.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.18.2'

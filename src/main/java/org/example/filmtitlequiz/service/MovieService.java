@@ -48,6 +48,7 @@ public class MovieService {
 	private Movie getDefaultMovie() {
 		return new Movie(0, "Default_Title", "Default_path");
 	}
+
 	public String currentGenre() {
 		return currentGenre.name().toUpperCase();
 	}
