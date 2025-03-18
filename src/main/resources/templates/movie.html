@@ -65,88 +65,44 @@
 
     </style>
 </head>
-<body
-        class="bg-dark text-white text-center">
 
 <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-        <!-- Slide 1: pierwszy backdrop -->
-        <div class="carousel-item active"
-             th:style="${'background-image: url(' + backdrop1 + ');'}">
             <div class="carousel-caption top-50 translate-middle-y text-with-shadow">
                 <div class="container mt-5 text-with-shadow">
                     <h1 class="display-4">Movie</h1>
                     <div>
-            <span th:each="charr : ${puzzleTitle}"
-                  th:utext="${charr == ' ' ? '&nbsp;' : charr}"
-                  th:classappend="${charr == ' ' ? 'space-box' : 'chars-box'}"
-            >
-            </span>
                     </div>
                     <br>
                     <span th:text="${genre}"></span>
-                    <br>
-                    <br>
                     <a href="/movie" class="btn btn-primary">Accept</a>
                 </div>
             </div>
         </div>
-        <!-- Slide 2: drugi backdrop -->
-        <div class="carousel-item"
-             th:style="${'background-image: url(' + backdrop2 + ');'}">
             <div class="carousel-caption top-50 translate-middle-y text-with-shadow">
                 <div class="container mt-5 text-with-shadow">
-                    <h1 class="display-4">Movie</h1>
                     <div>
-            <span th:each="charr : ${puzzleTitle}"
-                  th:utext="${charr == ' ' ? '&nbsp;' : charr}"
-                  th:classappend="${charr == ' ' ? 'space-box' : 'chars-box'}"
-            >
-            </span>
                     </div>
                     <br>
-                    <span th:text="${genre}"></span>
-                    <br>
-                    <br>
-                    <a href="/movie" class="btn btn-primary">Accept</a>
                 </div>
             </div>
         </div>
-        <div class="carousel-item"
-             th:style="${'background-image: url(' + backdrop3 + ');'}">
             <div class="carousel-caption top-50 translate-middle-y text-with-shadow">
                 <div class="container mt-5 text-with-shadow">
-                    <h1 class="display-4">Movie</h1>
                     <div>
-            <span th:each="charr : ${puzzleTitle}"
-                  th:utext="${charr == ' ' ? '&nbsp;' : charr}"
-                  th:classappend="${charr == ' ' ? 'space-box' : 'chars-box'}"
-            >
-            </span>
                     </div>
                     <br>
-                    <span th:text="${genre}"></span>
-                    <br>
-                    <br>
-                    <a href="/movie" class="btn btn-primary">Accept</a>
-                </div>
             </div>
         </div>
     </div>
-
-    <!-- Przyciski poprzedni/następny (opcjonalne) -->
-    <button class="carousel-control-prev" type="button"
-            data-bs-target="#movieCarousel" data-bs-slide="prev">
+    </div>
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button"
-            data-bs-target="#movieCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
 <script src="webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
